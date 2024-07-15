@@ -20,14 +20,28 @@
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'users:landing_page' %}">Campus Course Guide</a>
-                <a class="btn btn-primary" href="{% url 'users:user_login' %}">Sign Up</a>
+                
+                {% if request.user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'users:dashboard' %}" style="font-weight: bold;">Campus Course Guide</a>
+                {% else %}
+                <a class="navbar-brand" href="{% url 'users:welcome' %}" style="font-weight: bold;">Campus Course Guide</a>
+                {% endif %}
+                    
+                {% if request.user.is_authenticated %}
+                <div>
+                    <a style="padding-right: 20px;">Hello, {{request.user|capfirst}}</a>
+                    <a class="btn btn-primary" href="{% url 'users:user_logout' %}">Logout</a>
+                </div>
+                {% else %}
+                <div>
+                    <a class="btn btn-primary" href="{% url 'users:user_login' %}">Login</a>
+                    <a class="btn btn-primary" href="{% url 'users:user_register' %}">Sign Up</a>
+                </div>
+                {% endif %}
             </div>
         </nav>
 
-        
-        {% block content %}
-            
+    
         <!-- Masthead-->
         <header class="masthead">
             <div class="container position-relative">
@@ -40,6 +54,9 @@
                 </div>
             </div>
         </header>
+
+        {% block content %}
+     
         <!-- Icons Grid-->
         <section class="features-icons bg-light text-center">
             <div class="container">

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'holder.html' %}
 
 
 {% block content %}
@@ -13,10 +13,32 @@
 
     <h2 class="mb-4 mt-2">Lets get you registered</h2>
 
-    <!-- <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">First Name</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-    </div> -->
+    {% if messages %}
+    
+    {% for message in messages %}
+    <div style="width: 50%;" class="alert alert-danger" role="alert">
+        <p style="display:flex; justify-content: center; align-items: center; font-size: large;">{{message}}</p>
+      </div>
+    {% endfor %}
+        
+{% endif %}
+
+   <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+    </div>
+    
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="">
+    </div>
+
+    <button class="btn btn-primary mb-4" type="submit">Login</button>
+
+   </form>
 
    
     

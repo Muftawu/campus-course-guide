@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Landing Page - Start Bootstrap Theme</title>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
+        type="text/css" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+        type="text/css" />
+    <link href="{% static 'style.css' %}" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="{% static 'script.js' %}"></script>
+</head>
+
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a class="navbar-brand" href="" style="font-weight: bold; font-size: x-large;">Campus Course Guide</a>
+            {% if request.user.is_authenticated %}
+            <div style="margin-top: 10px;">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="search" />
+                    <button class="btn btn-success mb-2 p-1" type="submit">Search</button>
+                </form>
+                <div style="margin-top: 20px;">
+                    <a style="font-size: 15px;" class="navbar-brand" href="">Slides</a>
+                    <a style="font-size: 15px;" class="navbar-brand" href="">Books</a>
+                    <a style="font-size: 15px;" class="navbar-brand" href="">Links</a>
+                    <a style="font-size: 15px;" class="navbar-brand" href="">Videos</a>
+
+                    {% if request.user.user_type == "Teaching Assistant" %}
+                    <a id="hover_upload" href="{% url 'resource:upload_resource' %}" class="btn btn-primary p-1 font-10" tabindex="-1"
+                        role="button" aria-disabled="true"
+                        >
+                        Upload Resource
+                    </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-white position-relative">
+                    Hello, {{request.user.first_name|capfirst}}
+                    <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+                        {{request.user.user_type}}
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <a class="btn btn-primary" href="{% url 'users:user_logout' %}">Logout</a>
+            </div>
+            {% else %}
+            <div>
+                <a class="btn btn-primary" href="{% url 'users:user_login' %}">Login</a>
+                <a class="btn btn-primary" href="{% url 'users:user_register' %}">Sign Up</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %}
+
+    <!-- Masthead-->
+    <header class="masthead">
+        <div class="container position-relative">
+            <div class="row justify-content-center">
+                <div class="col-xl-6">
+                    <div class="text-center text-white">
+                        <h1 class="">Do more with Campus Course Guide</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Icons Grid-->
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                        <h3>Reference Materials</h3>
+                        <p class="lead mb-0">Access the latest books, slides, academic articles, reports, etc...</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                        <h3>Tutorial Videos</h3>
+                        <p class="lead mb-0">Pool of academic videos, Youtube, Coursera, etc</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                        <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                        <h3>Questions Bank</h3>
+                        <p class="lead mb-0">Unlimited Past Questions and Solution</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock content %}
+
+
+    <!-- Footer-->
+    <footer class="footer bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
+                    <ul class="list-inline mb-2">
+                        <li class="list-inline-item"><a href="#!">About</a></li>
+                        <li class="list-inline-item">⋅</li>
+                        <li class="list-inline-item"><a href="#!">Contact</a></li>
+                        <li class="list-inline-item">⋅</li>
+                        <li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+                        <li class="list-inline-item">⋅</li>
+                        <li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+                    </ul>
+                    <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2023. All Rights Reserved.</p>
+                </div>
+                <div class="col-lg-6 h-100 text-center text-lg-end my-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item me-4">
+                            <a href="#!"><i class="bi-facebook fs-3"></i></a>
+                        </li>
+                        <li class="list-inline-item me-4">
+                            <a href="#!"><i class="bi-twitter fs-3"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#!"><i class="bi-instagram fs-3"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+</body>
+
+</html>

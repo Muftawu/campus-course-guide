@@ -35,6 +35,7 @@ class CustomUserManager(UserManager):
         return self._create_user(email, password, **extra_fields) 
 
 class CustomUser(AbstractUser):
+    username = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True, unique=False)
     email = models.EmailField(unique=True, null=True, blank=True)
     first_name = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
     last_name = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
@@ -53,9 +54,9 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = uuid.uuid4()
+            self.slug = uuid.uuid4().hex
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.first_name} - {self.user_type}"
+        return f"{self.first_name}"
     
