@@ -76,13 +76,23 @@ WSGI_APPLICATION = 'campus_course_guide.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+if os.getenv('DB_TYPE') == "postgres":
+    DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('RAILWAY_DB_NAME'),
+            'USER': os.getenv('RAILWAY_DB_USER'),
+            'PASSWORD': os.getenv('RAILWAY_DB_PASSWORD'),
+            'HOST': os.getenv('RAILWAY_DB_HOST'),
+            'PORT': os.getenv('RAILWAY_DB_PORT'),
+        }
 
 
 # Password validation

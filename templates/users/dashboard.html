@@ -1,7 +1,7 @@
-{% extends 'holder.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    
+
 
 <div style="
     display: flex;
@@ -12,78 +12,70 @@
     margin-bottom: 20px;
     ">
 
-    
-{% if messages %}
-    
+    {% if messages %}
+
     {% for message in messages %}
     <div style="width: 20%;" class="alert alert-success" role="alert">
-        <p style="display:flex; justify-content: center; align-items: center; font-size: 20px; margin-bottom: -4px;">{{message|capfirst}}</p>
-      </div>
-    {% endfor %}
-        
-{% endif %}
-   
-
-
-{% if request.user.user_type == "Student" %}
-<p style="font-weight: bold;">Recommended Resources based on your Programme</p>
-
-      
-<div style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; flex-wrap: wrap;">
-    {% for rec in recommended %}
-    <div class="card" style="width: 18rem; margin: 10px; display: flex; justify-self: center; align-items: center;">
-        <img src="{% static 'document.png' %}" width="200" height="200" card-img-top alt="...">
-        <div class="card-body">
-            <h5 class="card-title">{{ rec }}</h5>
-            <p class="card-text">Some quick example text.</p>
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
-            <a href="#" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
-        </div>
+        <p style="display:flex; justify-content: center; align-items: center; font-size: 20px; margin-bottom: -4px;">
+            {{message|capfirst}}</p>
     </div>
     {% endfor %}
-    
-</div>
-{% else %}
+
+    {% endif %}
 
 
-<h5 style="margin-bottom: 20px;">My Uploads (5)</h5>
 
-<div class="list-group">
+    {% if request.user.user_type == "Student" %}
+    <p style="font-weight: bold;">Recommended Resources for {{ request.user.programme }} ({{ request.user.year }})</p>
 
-    
-    {% for upload in all_uploads %}
 
-    <div style="margin-bottom: 10px; width: 500px;">
-        <p>media url {{MEDIA_URL}} </p>
-        <a href="" class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{ upload }}</h5>
-              <small>3 days ago</small>
+    <div
+        style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; flex-wrap: wrap;">
+        {% for rec in recommended %}
+        <div class="card" style="width: 18rem; margin: 10px; display: flex; justify-self: center; align-items: center;">
+            <img src="{% static 'document.png' %}" width="120" height="120" card-img-top alt="...">
+            <div class="card-body">
+                <h5 class="card-title"
+                    style="text-align: center; display: flex; justify-content: center; align-items: center;">{{ rec }}
+                </h5>
+                <p class="card-text">Some quick example text.</p>
             </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small>And some small print.</small>
-          </a>
+            <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
+                <a href="#" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+
+
+    <h4 style="margin-bottom: 20px;">My Uploads ({{all_uploads.count}})</h4>
+
+    <div class="list-group">
+
+
+        {% for upload in all_uploads %}
+
+        <div style="margin-bottom: 10px; width: 500px; border-radius: 20px;">
+            <a href="" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ upload }}</h5>
+                    <small>3 days ago</small>
+                </div>
+                <p class="mb-1">Some placeholder content in a paragraph.</p>
+                <small>And some small print.</small>
+            </a>
+        </div>
+
+        {% empty %}
+        <p>❗No uploaded resources❗</p>
+        {% endfor %}
+
     </div>
 
-    {% empty %}
-        <p>❗No uploaded resources❗</p>
-    {% endfor %}
-        
+    {% endif %}
 
-    
-    
-    
-  </div>
-
-
-
-
-{% endif %}
-    
-     
-        
-    
 </div>
 
 

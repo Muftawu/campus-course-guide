@@ -23,8 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # custom apps
-    path('campus-guide/', include("apps_users.urls")),
-    path('campus-guide/', include("apps_resources.urls")),
+    path('ccg/', include("apps_users.urls")),
+    path('ccg/', include("apps_resources.urls")),
 ]
 
 

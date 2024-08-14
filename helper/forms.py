@@ -3,10 +3,15 @@ from apps_users.models import CustomUser
 from apps_resources.models import VideoResource, LinkResource, ImageResource, BookResource
 from django.contrib.auth.forms import UserCreationForm 
 
-class UserForm(UserCreationForm):
+class NewUserForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ["first_name", "last_name", "email", "programme", "year", "college", "user_type", "password1", "password2"]
+        fields = ["first_name", "last_name", "email", "programme", "year", "user_type", "password1", "password2"]
+        
+class EditProfile(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ["first_name", "last_name", "email", "programme", "year"]
         
 
 class LinkResourceForm(forms.ModelForm):
