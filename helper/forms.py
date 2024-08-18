@@ -26,4 +26,4 @@ class ResourceForm(forms.ModelForm):
 class TutorialForm(forms.ModelForm):
     class Meta:
         model = Tutorial
-        fields = "__all__"
+        fields = ["name", "programme", "topic", "session", "venue", "date_and_time"]
