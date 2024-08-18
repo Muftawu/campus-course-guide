@@ -2,6 +2,8 @@ from django import forms
 from apps_users.models import CustomUser
 from apps_resources.models import Resource
 from django.contrib.auth.forms import UserCreationForm 
+#Import tutorial class
+from apps_resources.models import Tutorial
 
 class NewUserForm(UserCreationForm):
     class Meta:
@@ -18,4 +20,10 @@ class ResourceForm(forms.ModelForm):
         model = Resource
         fields = "__all__"
         exclude = ["user", "slug", "resource_type",]
-       
+
+
+#create modelform to handle tutorial posts
+class TutorialForm(forms.ModelForm):
+    class Meta:
+        model = Tutorial
+        fields = "__all__"
