@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import VideoResource, BookResource, LinkResource, ImageResource
+from .models import Resource, Tutorial
 
-admin.site.register(VideoResource)
-admin.site.register(BookResource)
-admin.site.register(LinkResource)
-admin.site.register(ImageResource)
+admin.site.register(Resource)
+admin.site.register(Tutorial)

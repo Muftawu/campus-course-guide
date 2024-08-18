@@ -12,7 +12,6 @@
         {% block title %}
         Welcome
         {% endblock title %}
-
     </title>
 
     <!-- Bootstrap CSS -->
@@ -34,50 +33,55 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: larger;">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: larger; margin-top: 10px;">
                     {% if request.user.is_authenticated %}
-                            {% if request.user.user_type == "Teaching Assistant" %}
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#"><h4>Campus Course Guide</h4></a>
+                    {% if request.user.user_type == "Teaching Assistant" %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <h4>Campus Course Guide</h4>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Schedule a tutorial</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Upload Resource
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#bookSlideUpload">Slides/Books</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#videoUpload">Videos</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">Links</button></li>
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop">Questions</button></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Recommended</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Action
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Schedule a tutorial</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Upload Resource
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Slides</a></li>
-                                    <li><a class="dropdown-item" href="#">Books</a></li>
-                                    <li><a class="dropdown-item" href="#">Videos</a></li>
-                                    <li><a class="dropdown-item" href="#">Links</a></li>
-                                    <li><a class="dropdown-item" href="#">Questions</a></li>
-                                </ul>
-                            </li>
-                            {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Recommended</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Action
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-                            {% endif %}
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">
@@ -98,7 +102,7 @@
                     {% if request.user.is_authenticated %}
                     <li class="nav-item">
                         <button type="button" class="btn btn-primary position-relative" style="margin: 10px;">
-                            {{ request.user|capfirst }}
+                            {{ request.user.first_name|capfirst }}
                             <span
                                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {% if request.user.user_type == "Teaching Assistant" %}
@@ -110,9 +114,11 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profile"
-                            style="margin:10px">
-                            Profile
+                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#profile"
+                            style="margin-top: 7px">
+                            <a class="navbar-brand" href="#">
+                                <img src="{% static 'user_profile.png' %}" width="30" height="30" />
+                            </a>
                         </button>
                     </li>
                     <li class="nav-item">
@@ -184,14 +190,14 @@
                 </div>
                 <div class="modal-body">
                     <div id="register-form-messages"></div>
-                    <form id="register-form" action="" method="POST">
+                    <form id="register-form" action="{% url 'users:user_register' %}" method="POST">
                         {% csrf_token %}
                         {{ new_user_form|crispy }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>
@@ -213,7 +219,7 @@
                         {{ user_profile|crispy }}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" name="edit_profile" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -236,7 +242,7 @@
                         <p>Are you sure you want to Logout</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Logout</button>
                         </div>
                     </form>
                 </div>
@@ -244,21 +250,57 @@
         </div>
     </div>
 
-    <div style="
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    ">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
+    <!-- Book/Slide/Video Resource Upload Modal -->
+    <div class="modal fade" id="bookSlideUpload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload Academic Resource (Slides, Books)</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="upload-book-slide-resource-form-messages"></div>
+                    <form id="upload-book-slide-resource-form" action="{% url 'users:dashboard' %}" method="POST"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ slide_upload_form|crispy }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="slide_book_resource" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-        {% endif %}
     </div>
+
+    <!-- Video Resource Upload Modal -->
+    <div class="modal fade" id="videoUpload" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload Academic Resource (Slides, Books)</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="upload-video-resource-form-messages"></div>
+                    <form id="upload-video-resource-form" action="{% url 'users:dashboard' %}" method="POST"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ video_upload_form|crispy }}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="video_resource" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     {% if not request.user.is_authenticated %}
     <div style="

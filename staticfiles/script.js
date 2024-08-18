@@ -1,4 +1,3 @@
-// AJAX - handling dynamic server rendering
 $(document).ready(function() {
     function handleFormSubmit(form) {
         var formData = form.serialize(); 
@@ -10,7 +9,6 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 if (response.redirect) {
-                  console.log('redirecting to dashboard')
                     window.location.href = response.redirect;
                 }
                 if (response.message) {
@@ -36,6 +34,16 @@ $(document).ready(function() {
         event.preventDefault(); 
         handleFormSubmit($(this)); 
     });
+
+    // $('#upload-book-slide-resource-form').on('submit', function(event) {
+    //     event.preventDefault(); 
+    //     handleFormSubmit($(this)); 
+    // });
+
+    // $('#upload-video-resource-form').on('submit', function(event) {
+    //     event.preventDefault(); 
+    //     handleFormSubmit($(this)); 
+    // });
 });
 
 
