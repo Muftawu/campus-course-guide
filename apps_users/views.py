@@ -6,6 +6,8 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from apps_resources.models import Resource
+from helper.forms import TutorialForm
+from django.urls import reverse
 
 def user_login(request):
     if request.user.is_authenticated:
@@ -109,3 +111,19 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('users:welcome')
+    
+
+
+
+#To handle tutorials posted, saving it to the database
+def handleTutorialPost(request):
+
+    # create object of form
+    if request.method == "POST":
+        form = TutorialForm(request.POST or None, request.FILES or None)
+     
+        # check if form data is valid
+        if form.is_valid():
+            # save the form data to model
+            form.save()
+    return HttpResponseRedirect(reverse("users:dashboard"))
