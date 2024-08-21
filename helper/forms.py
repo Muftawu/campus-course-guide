@@ -1,9 +1,7 @@
 from django import forms 
 from apps_users.models import CustomUser
-from apps_resources.models import Resource
+from apps_resources.models import Resource, Tutorial
 from django.contrib.auth.forms import UserCreationForm 
-#Import tutorial class
-from apps_resources.models import Tutorial
 
 class NewUserForm(UserCreationForm):
     class Meta:
@@ -21,9 +19,10 @@ class ResourceForm(forms.ModelForm):
         fields = "__all__"
         exclude = ["user", "slug", "resource_type",]
 
-
-#create modelform to handle tutorial posts
 class TutorialForm(forms.ModelForm):
     class Meta:
         model = Tutorial
-        fields = ["name", "programme", "topic", "session", "venue", "date_and_time"]
+        fields = ["name", "programme", "topic", "session", "venue", "mode", "link", "date_and_time"]
+        widgets = {
+            'date_and_time': forms.DateInput(attrs={'type': 'date'}),
+        }

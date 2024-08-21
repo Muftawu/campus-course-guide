@@ -8,11 +8,12 @@ YEAR_TYPE = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year", "6th Ye
 
 COLLEGE = ["Engineering", "Science", "Humanities"]
 
-PROGRAMME_LIST = ["Computer", "Civil", "Electrical", "Mechanical", "Petroleum", "Materials",
-                  "Aerospace", "Marine", "Biomedical", "Agric"]
+PROGRAMME_LIST = ["Computer", "Civil", "Electrical", "Mechanical", "Petroleum", "Materials", "Aerospace", "Marine", "Biomedical", "Agric"]
 
 PROGRAMME = [f'{programme} Engineering' for programme in PROGRAMME_LIST] 
 
 QUESTION_TYPE = ["Midsemester", "End of Semester"]
 
 SESSION = ["Morning", "Afternoon", "Evening"]
+
+TUTORIAL_MODES = ["In-Person", "Online -(Zoom)"]

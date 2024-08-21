@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from helper.forms import NewUserForm, CustomUser,  ResourceForm, EditProfileForm
+from helper.forms import NewUserForm, CustomUser,  ResourceForm, EditProfileForm, Tutorial, TutorialForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from apps_resources.models import Resource
-from helper.forms import TutorialForm
 from django.urls import reverse
 
 def user_login(request):
@@ -73,6 +72,7 @@ def dashboard(request):
 
     user = CustomUser.objects.get(slug=request.user.slug)
     edit_profile_form = EditProfileForm(instance=user)
+    tutorial_form = TutorialForm()
     resource_form = ResourceForm()
     
     if request.method == "POST":
@@ -100,30 +100,26 @@ def dashboard(request):
                 return HttpResponseRedirect(reverse('users:dashboard'))
             else:
                 messages.error(request, f'{resource_form.errors.as_text()}')
+
+        elif 'schedule_tutorial' in request.POST:
+            tutorial_form = TutorialForm(request.POST)
+            if tutorial_form.is_valid():
+                tutorial = tutorial_form.save(commit=False)
+                tutorial.user = user
+                tutorial.save()
+                messages.success(request, 'Tutorial successfully scheduled')
+                return HttpResponseRedirect(reverse('users:dashboard'))
+            else:
+                messages.error(request, f'{tutorial_form.errors.as_text()}')
     else:
         edit_profile_form = EditProfileForm(instance=user)
         resource_form = ResourceForm()
+        tutorial_form = TutorialForm(request.POST)
 
-    context.update({'user_profile': edit_profile_form, 'resource_form': resource_form,})
+    context.update({'user_profile': edit_profile_form, 'resource_form': resource_form, 'tutorial_form': tutorial_form})
     return render(request, 'users/dashboard.html', context)
 
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
         return redirect('users:welcome')
-    
-
-
-
-#To handle tutorials posted, saving it to the database
-def handleTutorialPost(request):
-
-    # create object of form
-    if request.method == "POST":
-        form = TutorialForm(request.POST or None, request.FILES or None)
-     
-        # check if form data is valid
-        if form.is_valid():
-            # save the form data to model
-            form.save()
-    return HttpResponseRedirect(reverse("users:dashboard"))

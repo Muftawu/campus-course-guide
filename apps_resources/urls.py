@@ -4,5 +4,5 @@ from . import views
 app_name = "resource"
 
 urlpatterns = [
-    path('upload_resource/', views.upload_resource, name='upload_resource'),
+    path('contributions/', views.tutorials  , name='contributions'),
 ]

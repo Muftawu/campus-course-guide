@@ -26,7 +26,7 @@
 
  ## Yurlim Azindow
    - UI/UX Developer
-      - 
+      - Resource search page
 
 
  ## Neequye Amon

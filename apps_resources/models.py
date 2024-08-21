@@ -38,10 +38,12 @@ class Resource(models.Model):
 
 class Tutorial(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
-    programme = MultiSelectField(choices=[(prog, prog) for prog in PROGRAMME], max_length=200, max_choices=15, null=True, blank=True)
+    name = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True, verbose_name="Name of Tutorial")
+    programme = MultiSelectField(choices=[(prog, prog) for prog in PROGRAMME], max_length=200, max_choices=15, null=True, blank=True, verbose_name="Related Programmes")
     topic = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
     session = MultiSelectField(choices=[(sess, sess) for sess in SESSION], max_length=200, max_choices=15, null=True, blank=True)
+    mode = models.CharField(max_length=MAX_STR_LEN, choices=[(mode, mode) for mode in TUTORIAL_MODES], null=True, blank=True, verbose_name="Mode of meeting")
+    link = models.URLField(null=True, blank=True, verbose_name="Link to meeting if Online/Virtual")
     venue = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
     date_and_time = models.DateTimeField(null=True, blank=True)
     slug = models.SlugField(null=True, blank=True)
