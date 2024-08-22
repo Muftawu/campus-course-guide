@@ -22,7 +22,7 @@
 
     {% if messages %}
     {% for message in messages %}
-    <div style="width: 20%;" class="alert alert-success" role="alert">
+    <div style="width: 40%;" class="alert alert-success" role="alert">
         <p style="display:flex; justify-content: center; align-items: center; font-size: 20px; margin-bottom: -4px;">
             {{message|capfirst}}</p>
     </div>
@@ -45,7 +45,7 @@
                 <p class="card-text">Some quick example text.</p>
             </div>
             <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
-                <a href="#" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
+                <a href="{{ upload.resource_item.url }}" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
             </div>
         </div>
         {% endfor %}
@@ -60,15 +60,25 @@
         style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; flex-wrap: wrap;">
         {% for upload in all_uploads %}
         <div class="card" style="width: 18rem; margin: 10px; display: flex; justify-self: center; align-items: center;">
-            <img src="{% static 'pdf.png' %}" width="120" height="120" card-img-top alt="...">
+            {% if upload.resource_type == "pdf" %}
+            <img src="{% static 'pdf.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+            {% elif upload.resource_type == "mp4" %}
+            <img src="{% static 'video_1.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+            {% else %}
+            <img src="{% static 'link.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+            {% endif %}
             <div class="card-body">
                 <h5 class="card-title"
-                    style="text-align: center; display: flex; justify-content: center; align-items: center;">{{upload.resource_name }}
+                    style="text-align: center; display: flex; justify-content: center; align-items: center;">{{upload.resource_name|slice:25 }}
                 </h5>
-                <p class="card-text">{{ upload.description }}</p>
+                <p class="card-text">{{ upload.description|slice:30 }}...</p>
             </div>
             <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
-                <a href="#" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
+                {% if upload.resource_type != "link" %}
+                <a href="{{ upload.resource_item.url }}" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
+                {% else %}
+                <a href="{{ upload.resource_link }}" style="width: 200px; align-items: center;" class="btn btn-primary">Go to Link</a>
+                {% endif %}
             </div>
         </div>
 

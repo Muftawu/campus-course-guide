@@ -2,3 +2,4 @@ python-dotenv==1.0.0
 Django==4.2.5
 django-crispy-forms==2.2
 crispy-bootstrap5==2024.2
+django-multiselectfield==0.1.12

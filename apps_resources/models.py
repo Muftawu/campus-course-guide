@@ -10,6 +10,7 @@ class Resource(models.Model):
     resource_type = models.CharField(max_length=MIN_STR_LEN, null=True, blank=True)
     related_programmes = MultiSelectField(choices=[(prog, prog) for prog in PROGRAMME], max_length=200, max_choices=15, null=True, blank=True)
     resource_item = models.FileField(upload_to='uploads', null=True, blank=True)
+    resource_link = models.URLField(null=True, blank=True, verbose_name='Resource link where applicable')
     description = models.CharField(max_length=MAX_STR_LEN, null=True, blank=True)
     slug = models.SlugField(null=True, blank=True)
     created = models.DateTimeField(auto_now=True)
@@ -50,5 +51,8 @@ class Tutorial(models.Model):
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created", ]
+        
     def __str__(self):
         return f"{self.name} - {self.venue} - @ {self.date_and_time}"

@@ -54,7 +54,7 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <a href="">
+                        <a href="{% url 'resource:tutorials' %}">
                             <button type="button" class="btn btn-light" data-bs-toggle="modal"
                             data-bs-target="#resourceUpload" style="font-size: large;">
                               My Tutorials
@@ -93,9 +93,10 @@
                 </ul>
 
                 {% if request.user.is_authenticated %}
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                <form class="d-flex" method="POST" action="{% url 'users:dashboard' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" name="search_item" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" name="query" type="submit">Search</button>
                 </form>
                 {% endif %}
 

@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from apps_resources.models import Resource
 from django.urls import reverse
+from django.db.models import Q 
 
 def user_login(request):
     if request.user.is_authenticated:
@@ -87,14 +88,22 @@ def dashboard(request):
         elif 'resource_form' in request.POST:
             resource_form = ResourceForm(request.POST, request.FILES)
             if resource_form.is_valid():
-                resource_obj = str(resource_form['resource_item'].data).split('.')
+
+                if request.FILES:
+                    resource_obj = str(resource_form['resource_item'].data).split('.')
+                    item = request.FILES['resource_item']
+                else:
+                    resource_obj = ["link", "link"]
+                    item = None
+                
                 Resource.objects.create(
                     user=request.user,
                     resource_name=request.POST['resource_name'],
-                    resource_type=resource_obj[1],
+                    resource_type=resource_obj[-1],
                     related_programmes=request.POST['related_programmes'],
                     description=request.POST['description'],
-                    resource_item=request.FILES['resource_item']
+                    resource_item=item,
+                    resource_link=request.POST["resource_link"],
                 )
                 messages.success(request, 'Resource uploaded successfully')
                 return HttpResponseRedirect(reverse('users:dashboard'))
@@ -108,9 +117,16 @@ def dashboard(request):
                 tutorial.user = user
                 tutorial.save()
                 messages.success(request, 'Tutorial successfully scheduled')
-                return HttpResponseRedirect(reverse('users:dashboard'))
+                return HttpResponseRedirect(reverse('resource:tutorials'))
             else:
                 messages.error(request, f'{tutorial_form.errors.as_text()}')
+
+        elif 'query' in request.POST:
+            query = request.POST['search_item']
+            # search_results = Resource.objects.filter(Q(resource_name__icontains=query) | Q(related_programmes__icontains=query) | Q(description__icontains=query))         
+            # messages.success(request, 'Tutorial successfully scheduled')
+            return HttpResponseRedirect(reverse('resource:search_results', args=[query]))
+
     else:
         edit_profile_form = EditProfileForm(instance=user)
         resource_form = ResourceForm()
@@ -122,4 +138,4 @@ def dashboard(request):
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect('users:welcome')
+        return HttpResponseRedirect(reverse('users:welcome'))

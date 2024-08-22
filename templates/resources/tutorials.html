@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+
+<title>
+    CCG |
+    {% block title %}
+    Tutorials
+    {% endblock title %}
+</title>
+
 {% block content %}
-    
+
 
 <div style="
     display: flex;
@@ -12,22 +20,40 @@
     margin-bottom: 20px;
     ">
 
-    
-{% if messages %}
-    
+
+    {% if messages %}
+
     {% for message in messages %}
     <div style="width: 50%;" class="alert alert-success" role="alert">
         <p style="display:flex; justify-content: center; align-items: center; font-size: 20px;">{{message|capfirst}}</p>
-      </div>
+    </div>
     {% endfor %}
-        
-{% endif %}
-   
 
-<p style="font-weight: bold;">My Tutorials</p>
-     
-        
-    
+    {% endif %}
+
+
+    <p style="font-weight: bold;">My Tutorials</p>
+
+    <ol class="list-group list-group-numbered">
+        {% for tutorial in tutorials %}
+        <li class="list-group-item d-flex justify-content-between align-items-start" style="width: 500px;">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{ tutorial.name }}</div>
+            Topic:  {{ tutorial.topic }}<br>
+            Venue:  {{ tutorial.venue }}<br>
+            Date: {{ tutorial.date_and_time }}<br>
+            Session:  {{ tutorial.session }} 
+          </div>
+          <a href="" style="font-size: larger;">
+            <span class="badge text-bg-primary rounded-pill">Edit</span>
+          </a>
+        </li> 
+        <br>
+        {% endfor %}
+      </ol>
+
+
+
 </div>
 
 
