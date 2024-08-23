@@ -28,6 +28,14 @@ class Resource(models.Model):
             pass 
         return out 
     
+    @classmethod
+    def get_recommended(cls, user):
+        out = [] 
+        for resource in cls.objects.all():
+            if user.programme in resource.related_programmes:
+                out.append(resource)
+        return out
+        
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = uuid.uuid4()

@@ -31,25 +31,39 @@
     <div id="dash_messages"></div>
 
     {% if request.user.user_type == "Student" %}
-    <p style="font-weight: bold;">Recommended Resources for {{ request.user.programme }} ({{ request.user.year }})</p>
+    <h4>Recommended Resources for {{ request.user.programme }} ({{ request.user.year }})</h4>
 
     <div
-        style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; flex-wrap: wrap;">
-        {% for rec in recommended %}
-        <div class="card" style="width: 18rem; margin: 10px; display: flex; justify-self: center; align-items: center;">
-            <img src="{% static 'document.png' %}" width="120" height="120" card-img-top alt="...">
-            <div class="card-body">
-                <h5 class="card-title"
-                    style="text-align: center; display: flex; justify-content: center; align-items: center;">{{ rec }}
-                </h5>
-                <p class="card-text">Some quick example text.</p>
-            </div>
-            <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
-                <a href="{{ upload.resource_item.url }}" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
-            </div>
+    style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center; flex-wrap: wrap;">
+    {% for rec in recommended %}
+    <div class="card" style="width: 18rem; margin: 10px; display: flex; justify-self: center; align-items: center;">
+        {% if rec.resource_type == "pdf" %}
+        <img src="{% static 'pdf.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+        {% elif rec.resource_type == "mp4" %}
+        <img src="{% static 'video_1.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+        {% else %}
+        <img src="{% static 'link.png' %}" style="margin-top: 10px;" width="100" height="100" card-img-top alt="...">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title"
+                style="text-align: center; display: flex; justify-content: center; align-items: center;">{{upload.resource_name|slice:25 }}
+            </h5>
+            <p class="card-text">{{ rec.description|slice:30 }}...</p>
         </div>
-        {% endfor %}
+        <div style="display: flex; justify-content: center; align-items: center; padding-bottom: 10px;">
+            {% if rec.resource_type != "link" %}
+            <a href="{{ rec.resource_item.url }}" style="width: 200px; align-items: center;" class="btn btn-primary">View Resource</a>
+            {% else %}
+            <a href="{{ rec.resource_link }}" style="width: 200px; align-items: center;" class="btn btn-primary">Go to Link</a>
+            {% endif %}
+        </div>
     </div>
+
+    {% empty %}
+    <p>❗No recommended resources as of now</p>
+    {% endfor %}
+
+</div>
 
 
     {% else %}

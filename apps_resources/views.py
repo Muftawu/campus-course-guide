@@ -23,6 +23,5 @@ def search_results(request, query):
     tutorial_form = TutorialForm()
     resource_form = ResourceForm()
     search_results = Resource.objects.filter(Q(resource_name__icontains=query) | Q(related_programmes__icontains=query) | Q(description__icontains=query))  
-    print('search results for ', query, search_results)       
-    context = {'search_results': search_results, 'query': query, 'edit_profile_form': edit_profile_form, 'tutorial_form': tutorial_form, 'resource_form': resource_form}
+    context = {'search_results': search_results, 'query': query, 'user_profile': edit_profile_form, 'tutorial_form': tutorial_form, 'resource_form': resource_form}
     return render(request, 'resources/search_results.html', context)

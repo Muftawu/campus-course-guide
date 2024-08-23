@@ -38,7 +38,7 @@
     {% for result in search_results %}
 
     {% if result.resource_type != "link" %}
-    <a href="{{ result.resource_item.url }}" style="text-decoration: none;">
+    <a href="{{ result.resource_item.url }}" target="_blank" style="text-decoration: none;">
       {% else %}
       <a href="{{ result.resource_link }}" style="text-decoration: none;">
         {% endif %}

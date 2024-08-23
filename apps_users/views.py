@@ -3,11 +3,12 @@ from django.contrib.auth.decorators import login_required
 from helper.forms import NewUserForm, CustomUser,  ResourceForm, EditProfileForm, Tutorial, TutorialForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from apps_resources.models import Resource
 from django.urls import reverse
 from django.db.models import Q 
+from django.views.decorators.cache import never_cache
 
 def user_login(request):
     if request.user.is_authenticated:
@@ -26,9 +27,8 @@ def user_login(request):
             messages.success(request, f"Welcome back, {str(user.first_name).capitalize()}")
             return JsonResponse({'redirect': reverse('users:dashboard'), 'message': ''})
         else:
-            JsonResponse({'error': "Invalid credentials"}, status=400)    
-
-    return JsonResponse({'error': 'Invalid credentials or request method'}, status=400)
+            return JsonResponse({'error': "Invalid credentials"}, status=400)    
+    return HttpResponse('<h2 style="text-align: center; margin-top:50px"> Invalid request method. <br> <a style="text-decoration: none; margin-top: 40px" href="users/dashboard">Back to Welcome Page</a> </h2>', status=400)
 
 def user_register(request):
     if request.user.is_authenticated:
@@ -58,6 +58,7 @@ def welcome(request):
     context = {'new_user_form': new_user_form}
     return render(request, 'base.html', context)
 
+@never_cache
 @login_required(login_url='users:user_login')
 def dashboard(request):
     if not request.user.is_authenticated:
@@ -68,7 +69,7 @@ def dashboard(request):
         uploaded_resources = Resource.get_all_resources(user=request.user)
         context.update({'all_uploads': uploaded_resources})
     else:
-        recommended = ['CE 151', 'Calculus', 'Basic Mechanics', 'Operating System']
+        recommended = Resource.get_recommended(request.user)
         context.update({'recommended': recommended})
 
     user = CustomUser.objects.get(slug=request.user.slug)
@@ -123,8 +124,6 @@ def dashboard(request):
 
         elif 'query' in request.POST:
             query = request.POST['search_item']
-            # search_results = Resource.objects.filter(Q(resource_name__icontains=query) | Q(related_programmes__icontains=query) | Q(description__icontains=query))         
-            # messages.success(request, 'Tutorial successfully scheduled')
             return HttpResponseRedirect(reverse('resource:search_results', args=[query]))
 
     else:
@@ -139,3 +138,32 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
         return HttpResponseRedirect(reverse('users:welcome'))
+
+
+'''
+
+i am trying to return to my dashboard view from this function but its not working
+
+def user_login(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'redirect' : reverse('users:dashboard')})
+    
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
+
+        if not email or not password:
+            return JsonResponse({'error': 'Please provide an email and a password'}, status=400)
+
+        user = authenticate(request, email=request.POST["email"], password=request.POST["password"])
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"Welcome back, {str(user.first_name).capitalize()}")
+            return JsonResponse({'redirect': reverse('users:dashboard'), 'message': ''})
+        else:
+            return JsonResponse({'error': "Invalid credentials"}, status=400)    
+    return HttpResponse('<h2 style="text-align: center; margin-top:50px"> Invalid request method. <br> <a style="text-decoration: none; margin-top: 40px" href="{% url "users:dashboard" %}">Back to Welcome Page</a> </h2>', status=400)
+
+but this is the URL that appears in the field,
+http://localhost:8000/ccg/user_login/%7B%%20url
+'''
