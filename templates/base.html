@@ -34,10 +34,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: larger; margin-top: 10px;">
+
                     {% if request.user.is_authenticated %}
                     {% if request.user.user_type == "Teaching Assistant" %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link active" aria-current="page" href="{% url 'users:dashboard' %}">
                             <h4>Campus Course Guide</h4>
                         </a>
                     </li>
@@ -66,7 +67,10 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'users:dashboard' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">History</a>
+                        <a class="nav-link" href="{% url 'resource:tutorials' %}">All Tutorials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'resource:all_resources' %}">All Resources</a>
                     </li>
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -297,6 +301,7 @@
 
 
     {% if not request.user.is_authenticated %}
+    
     <div style="
     display: flex;
     flex-direction: column;

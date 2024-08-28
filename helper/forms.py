@@ -19,6 +19,12 @@ class ResourceForm(forms.ModelForm):
         fields = "__all__"
         exclude = ["user", "slug", "resource_type",]
 
+class EditResourceForm(forms.ModelForm):
+    class Meta:
+        model = Resource
+        fields = "__all__"
+        exclude = ["user", "slug", "resource_type",]
+
 class TutorialForm(forms.ModelForm):
     class Meta:
         model = Tutorial
